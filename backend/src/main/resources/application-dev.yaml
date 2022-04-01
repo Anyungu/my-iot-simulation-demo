@@ -1,17 +1,15 @@
 
-
-
 spring:
   rabbitmq:
-    host: my-iot-simulation-demo_rabbit_mq
+    host: localhost
     port: 5672
     username: apot
     password: Kurosaki
   datasource:
-    url: jdbc:postgresql://db:5432/test
+    url: jdbc:postgresql://localhost:5433/test
     username: postgres
     password: postgres
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL81Dialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update

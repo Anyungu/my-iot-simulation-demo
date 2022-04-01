@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -15,15 +17,30 @@ import java.time.LocalDateTime;
 public class DeviceData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "uuid", nullable = false, unique = true)
+    private UUID id;
 
+    @Column(name = "latitude", nullable = false)
     private Float latitude;
+
+    @Column(name = "longitude", nullable = false)
     private Float longitude;
+
+    @Column(name = "temp", nullable = false)
     private Float temp;
+
+    @Column(name = "humidity", nullable = false)
     private Float humidity;
+
+    @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp;
-    private Integer deviceId;
+
+    @Column(name = "device_id", nullable = false, unique = true)
+    private UUID deviceId;
     
 }

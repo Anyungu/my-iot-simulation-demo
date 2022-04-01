@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  rabbit_mq:
+    build: ./rabbit-mq
+    container_name: rabbit_mq
+    volumes:
+      - ./rabbit-mq/etc/:/etc/rabbitmq/
+      - rabbit_mq_data:/var/
+    ports:
+      - 5672:5672
+      - 15674:15672
+      - 1883:1883
+      - 15675:15675
+  backend:
+    container_name: backend
+    depends_on:
+      - rabbit_mq
+      - db
+    build: ./backend
+    ports:
+      - "8080"
+    links:
+      - "rabbit_mq:mq"
+  db:
+    container_name: db
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=test
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+
+  # frontend:
+  #   build: ./producer
+  #   ports:
+  #     - "8080"
+
+volumes:
+  rabbit_mq_data:
+    driver: local
+  
+  db:
+    driver: local
+
+  

@@ -1,0 +1,21 @@
+<div>
+  <div *ngIf="showSideNav">
+    <app-side-nav></app-side-nav>
+  </div>
+  <div class="search-box">
+    <div class="mb-3 xl:w-96">
+      <input
+        type="text"
+        class="h-14 pl-6 form-control block w-full px-3 py-1.5 text-base font-normal text-white bg-gray-600 bg-clip-padding border border-solid rounded-full border-gray-300 transition ease-in-out m-0 focus:text-white focus:bg-gray-600 focus:border-blue-600 focus:outline-none"
+        id="exampleText0"
+        placeholder="Search Device here ..."
+      />
+    </div>
+  </div>
+
+  <div class="map-container">
+    <div class="map-frame">
+      <div id="map"></div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,8 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
+import { BehaviorSubject} from 'rxjs';
+import { catchError, map, switchAll } from 'rxjs/operators';
+import { MqttDataService } from '../services/mqtt-data.service';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -21,7 +24,7 @@ L.Marker.prototype.options.icon = iconDefault;
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent implements AfterViewInit, OnInit {
   private map: any;
   showSideNav: boolean = true;
 
@@ -57,12 +60,20 @@ export class MapComponent implements AfterViewInit {
     this.map.flyTo(new L.LatLng(-1.286389, 36.817223));
   }
 
-  constructor() {} 
+  constructor(private mqttDataService: MqttDataService) {}
+
+  ngOnInit(): void {
+    this.mqttDataService.connect();
+  }
 
   ngAfterViewInit(): void {
     this.initMap();
+    this.mqttDataService.deviceMessages.subscribe({
+      next: next => console.log(next),
+      error: error => console.log(error)
+    });
+    
   }
-
   showOrHideSideNav() {
     this.showSideNav = !this.showSideNav;
   }

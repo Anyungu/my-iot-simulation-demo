@@ -40,7 +40,7 @@ public class DeviceData {
     @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp;
 
-    @Column(name = "device_id", nullable = false, unique = true)
+    @Column(name = "device_id", nullable = false)
     private UUID deviceId;
     
 }

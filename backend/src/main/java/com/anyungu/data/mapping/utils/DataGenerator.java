@@ -5,6 +5,7 @@ import com.anyungu.data.mapping.entitiles.DeviceData;
 import com.anyungu.data.mapping.repos.DeviceDataRepository;
 import com.anyungu.data.mapping.repos.DeviceRepository;
 import com.anyungu.data.mapping.v1.controllers.AmqpSender;
+import com.anyungu.data.mapping.v1.controllers.SocketSender;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,6 +26,10 @@ public class DataGenerator {
 
     @Autowired
     DeviceDataRepository deviceDataRepository;
+
+    @Autowired
+    SocketSender socketSender;
+
 
     public void generateDevices() {
 
@@ -68,6 +73,7 @@ public class DataGenerator {
 
             deviceDataRepository.saveAll(deviceData).forEach(data -> {
                 amqpSender.send("topic.sample.data", data);
+                socketSender.send("data", data);
             });
 
         } catch (Exception e) {

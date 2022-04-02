@@ -21,7 +21,7 @@ services:
       - db
     build: ./backend
     ports:
-      - "8080"
+      - 8080:8080
     links:
       - "rabbit_mq:mq"
   db:

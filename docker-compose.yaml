@@ -13,6 +13,7 @@ services:
       - 15000:15674
       - 1883:1883
       - 15675:15675
+      - 61613:61613
   backend:
     container_name: backend
     depends_on:

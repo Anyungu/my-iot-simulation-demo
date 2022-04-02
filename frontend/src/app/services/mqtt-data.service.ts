@@ -16,20 +16,14 @@ import {
 export class MqttDataService {
   deviceMessages: BehaviorSubject<any> = new BehaviorSubject({});
   private getNewConnection = (): WebSocketSubject<any> => {
-    return webSocket('ws://localhost:12345');
+    return webSocket('ws://localhost:15000/ws');
   };
 
   connect = () => {
-    let messages = this.getNewConnection().pipe(
-      map((res) => {
-        let newRes: any = res;
-
-        return newRes;
-      }),
-      catchError(this.handleError<any>())
-    );
-
-    this.deviceMessages.next(messages);
+    this.getNewConnection().subscribe( res => {
+      console.log(res)
+      this.deviceMessages.next(res);
+    })
   };
 
   handleError<T>() {

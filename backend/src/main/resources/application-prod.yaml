@@ -14,4 +14,4 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL81Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto:  create-drop

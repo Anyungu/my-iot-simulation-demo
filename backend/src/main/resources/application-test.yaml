@@ -1,7 +1,7 @@
 
 spring:
   rabbitmq:
-    host: rabbit_mq
+    host: mq
     port: 5672
     username: apot
     password: Kurosaki

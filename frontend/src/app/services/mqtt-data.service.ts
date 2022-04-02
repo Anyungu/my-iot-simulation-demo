@@ -17,7 +17,7 @@ export class MqttDataService {
   connection !: WebSocket
 
   constructor(){
-    this.connection =  Stomp.client('ws://localhost:1883/ws');
+    this.connection =  new WebSocket('ws://localhost:8080/ws');
     this.connection.onopen =(event) => {
       console.log(event)
     }

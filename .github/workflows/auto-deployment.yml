@@ -1,0 +1,25 @@
+name: Deploy IoT Simulation App
+# This workflow is triggered on pushes to the repository.
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Deploy Kodo Sensei To Servers
+    runs-on: ubuntu-latest
+    steps:
+      - name: Building on expertsoffice.net
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USERNAME }}
+          password: ${{ secrets.DO_PASSWORD }}
+          port: ${{ secrets.DO_PORT }}
+          script: |
+            mkdir -p my-iot-simulation-demo && cd my-iot-simulation-demo
+            git checkout master
+            git pull https://adams-okode:${{ secrets.DEPLOY_TOKEN }}@github.com/kodo-sensei/my-iot-simulation-demo.git
+            docker-compose up -d --build
+            yes | docker system prune

@@ -54,13 +54,10 @@ public class AmqpConfig {
     public SimpleRabbitListenerContainerFactory jsaFactory(ConnectionFactory connectionFactory,
                                                            SimpleRabbitListenerContainerFactoryConfigurer configurer) {
 
-        try {SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
             configurer.configure(factory, connectionFactory);
             factory.setMessageConverter(jsonMessageConverter());
-            return factory;}catch (Exception e) {
-            System.out.println(e.getMessage());
-            return  null;
-        }
+            return factory;
 
     }
 

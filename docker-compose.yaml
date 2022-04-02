@@ -10,8 +10,10 @@ services:
     ports:
       - 5672:5672
       - 15674:15672
+      - 15000:15674
       - 1883:1883
       - 15675:15675
+      - 61613:61613
   backend:
     container_name: backend
     depends_on:

@@ -1,12 +1,12 @@
 
 spring:
   rabbitmq:
-    host: localhost
+    host: mq
     port: 5672
     username: apot
     password: Kurosaki
   datasource:
-    url: jdbc:postgresql://localhost:5433/test
+    url: jdbc:postgresql://db:5433/test
     username: postgres
     password: postgres
   jpa:

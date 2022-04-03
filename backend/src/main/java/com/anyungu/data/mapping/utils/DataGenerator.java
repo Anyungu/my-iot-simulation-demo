@@ -53,7 +53,7 @@ public class DataGenerator {
     @Scheduled(fixedRate = 30000, initialDelay = 3000)
     private void generateData() {
         try {
-            System.out.println("Generating Devices Data")
+            System.out.println("Generating Devices Data");
             Faker faker = new Faker();
             List<Device> devices = deviceRepository.findAll();
             List<DeviceData> deviceData = new ArrayList<>();

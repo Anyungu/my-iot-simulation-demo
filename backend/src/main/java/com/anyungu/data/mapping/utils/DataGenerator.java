@@ -48,7 +48,7 @@ public class DataGenerator {
     }
 
 
-    @Scheduled(fixedRate = 600000, initialDelay = 3000)
+    @Scheduled(fixedRate = 30000, initialDelay = 3000)
     private void generateData() {
         try {
             Faker faker = new Faker();

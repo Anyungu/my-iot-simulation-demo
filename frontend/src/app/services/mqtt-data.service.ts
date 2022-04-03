@@ -17,22 +17,22 @@ export class MqttDataService {
   connection !: WebSocket
 
   constructor(){
-    this.connection =  Stomp.client('ws://localhost:1883/ws');
-    this.connection.onopen =(event) => {
-      console.log(event)
-    }
-    this.connection.onmessage = (event) => {
-      console.log(event);
-    }
-    this.connection.onerror =(err) => {
-      console.log(err);
-    }
+    // this.connection =  Stomp.client('ws://localhost:1883/ws');
+    // this.connection.onopen =(event) => {
+    //   console.log(event)
+    // }
+    // this.connection.onmessage = (event) => {
+    //   console.log(event);
+    // }
+    // this.connection.onerror =(err) => {
+    //   console.log(err);
+    // }
 
-    this.connection.onclose =(event) => {
-      console.log(event)
-    }
+    // this.connection.onclose =(event) => {
+    //   console.log(event)
+    // }
   }
-  deviceMessages: BehaviorSubject<any> = new BehaviorSubject({});
+ 
   private getNewConnection = () => {
     return
   };

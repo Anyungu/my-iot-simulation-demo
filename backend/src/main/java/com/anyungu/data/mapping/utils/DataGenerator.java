@@ -4,7 +4,7 @@ import com.anyungu.data.mapping.entitiles.Device;
 import com.anyungu.data.mapping.entitiles.DeviceData;
 import com.anyungu.data.mapping.repos.DeviceDataRepository;
 import com.anyungu.data.mapping.repos.DeviceRepository;
-import com.anyungu.data.mapping.v1.controllers.AmqpSender;
+// import com.anyungu.data.mapping.v1.controllers.AmqpSender;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,8 +17,8 @@ import java.util.List;
 @Service
 public class DataGenerator {
 
-    @Autowired
-    AmqpSender amqpSender;
+    // @Autowired
+    // AmqpSender amqpSender;
 
     @Autowired
     DeviceRepository deviceRepository;
@@ -37,7 +37,7 @@ public class DataGenerator {
                 device.setName(faker.bothify("DEVICE-###-#?"));
                 device.setSerialNumber(faker.regexify("[A-Z1-9]{15}"));
                 emptyDevice.add(device);
-                amqpSender.send("topic.sample.device", device);
+                // amqpSender.send("topic.sample.device", device);
             }
             deviceRepository.saveAll(emptyDevice);
         } catch (Exception e) {
@@ -66,9 +66,9 @@ public class DataGenerator {
                 deviceData.add(currentDeviceData);
             }
 
-            deviceDataRepository.saveAll(deviceData).forEach(data -> {
-                amqpSender.send("topic.sample.data", data);
-            });
+            // deviceDataRepository.saveAll(deviceData).forEach(data -> {
+            //     amqpSender.send("topic.sample.data", data);
+            // });
 
         } catch (Exception e) {
 

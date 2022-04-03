@@ -25,6 +25,15 @@ services:
       - "8080:8080"
     links:
       - "rabbit_mq:mq"
+    environment:
+      - AMQP_HOST=mq
+      - AMQP_PORT=5672
+      - AMQP_USERNAME=apot
+      - AMQP_PASSWORD=Kurosaki8
+      - DB_URL="jdbc:postgresql://db:5433/test"
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+
 
   db:
     container_name: db
@@ -38,7 +47,7 @@ services:
       - "5433:5432"
     volumes:
       - db:/var/lib/postgresql/data
-
+    
   frontend:
     container_name: frontend
     depends_on:

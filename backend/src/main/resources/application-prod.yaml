@@ -1,17 +1,11 @@
 
-
-
 spring:
   rabbitmq:
-    host: mq
-    port: 5672
-    username: apot
-    password: Kurosaki
+    host: ${AMQP_HOST}
+    port: ${AMQP_PORT}
+    username: ${AMQP_USERNAME}
+    password: ${AMQP_PASSWORD}
   datasource:
-    url: jdbc:postgresql://db:5432/test
-    username: postgres
-    password: postgres
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQL81Dialect
-    hibernate:
-      ddl-auto:  update
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}

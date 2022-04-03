@@ -12,6 +12,7 @@ import { HttpUtilService } from '../services/http-util.service';
 import { MqttDataService } from '../services/mqtt-data.service';
 import { groupBy } from 'lodash';
 import { SideNavControlService } from '../services/side-nav-control.service';
+import { environment } from 'src/environments/environment';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -122,10 +123,13 @@ export class MapComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.httpUtilService
-      .makeHttpRequest('GET', 'http://localhost:8080/device/all')
+      .makeHttpRequest('GET', `${environment.apiUrl}/device/all`)
       .subscribe({
         next: (next) => {
-          this.deviceInfo = groupBy(next.data, (single) => single.deviceUuid);
+          this.deviceInfo = groupBy(
+            next.data,
+            (single: any) => single.deviceUuid
+          );
           // let data = groupBy(next.data, (data: any) => data.deviceId);
           // this.deviceMessages.next(data);
         },
@@ -143,7 +147,7 @@ export class MapComponent implements AfterViewInit, OnInit, OnDestroy {
 
     this.pollInterval = setInterval(() => {
       this.httpUtilService
-        .makeHttpRequest('GET', 'http://localhost:8080/device-data/all')
+        .makeHttpRequest('GET', `${environment.apiUrl}/device-data/all`)
         .subscribe({
           next: (next) => {
             let data = groupBy(next.data, (data: any) => data.deviceId);

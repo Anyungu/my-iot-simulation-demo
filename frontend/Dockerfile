@@ -1,24 +1,20 @@
-#*** Make sure this and the production Dockerfile use the same node tag.***#
-FROM node:16.13-alpine as build-stage
-# Shared base image with dependencies installed
+# Stage 0, "build-stage", based on Node.js, to build and compile Angular
+FROM node:16.14.2 as build-stage
+
 WORKDIR /app
 
-COPY package*.json ./
+COPY package*.json /app/
 
 RUN npm install
 
-COPY ./ .
+COPY ./ /app/
 
-RUN npm run build
+RUN npm run build -- --output-path=./dist/out --configuration $configuration
 
 
-FROM nginx:1.21.3 as production-stage
-# Minimal image running app and nginx
+# Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
+FROM nginx:1.21
 
-RUN mkdir /app
+COPY --from=build-stage /app/dist/out/ /usr/share/nginx/html
 
-COPY --from=build-stage /app/dist /app
-
-COPY nginx.conf /etc/nginx/nginx.conf
-
-EXPOSE 8080
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf

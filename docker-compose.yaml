@@ -45,7 +45,7 @@ services:
       - backend
     build: ./frontend
     ports:
-      - 8081:8080
+      - 8081:80
 
 volumes:
   rabbit_mq_data:

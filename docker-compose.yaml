@@ -14,6 +14,9 @@ services:
       - 1883:1883
       - 15675:15675
       - 61613:61613
+    networks:
+      backnetwork:
+        ipv4_address: 10.5.0.6
 
   backend:
     container_name: backend
@@ -26,14 +29,17 @@ services:
     links:
       - "rabbit_mq:mq"
     environment:
-      - AMQP_HOST=mq
-      - AMQP_PORT=5672
-      - AMQP_USERNAME=apot
-      - AMQP_PASSWORD=Kurosaki8
-      - DB_URL="jdbc:postgresql://db:5433/test"
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
+      AMQP_HOST: 10.5.0.6
+      AMQP_PORT: 5672
+      AMQP_USERNAME: apot
+      AMQP_PASSWORD: Kurosaki8
+      DB_URL: jdbc:postgresql://10.5.0.5:5432/test
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
 
+    networks:
+      backnetwork:
+        ipv4_address: 10.5.0.3
 
   db:
     container_name: db
@@ -47,7 +53,10 @@ services:
       - "5433:5432"
     volumes:
       - db:/var/lib/postgresql/data
-    
+    networks:
+      backnetwork:
+        ipv4_address: 10.5.0.5
+
   frontend:
     container_name: frontend
     depends_on:
@@ -56,9 +65,17 @@ services:
     ports:
       - 8081:80
 
+networks:
+  backnetwork:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
+
 volumes:
   rabbit_mq_data:
     driver: local
-
   db:
     driver: local

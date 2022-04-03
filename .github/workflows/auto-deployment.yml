@@ -1,5 +1,6 @@
 name: Deploy IoT Simulation App
 # This workflow is triggered on pushes to the repository.
+
 on:
   push:
     branches:

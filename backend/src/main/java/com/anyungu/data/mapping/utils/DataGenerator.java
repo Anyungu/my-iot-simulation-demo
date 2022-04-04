@@ -26,12 +26,14 @@ public class DataGenerator {
     public void generateDevices() {
         System.out.println("Generating Devices Info");
 
+        deviceRepository.deleteAll();
+
         try {
             Faker faker = new Faker();
             List<Device> emptyDevice = new ArrayList<>();
             for (int i = 0; i <= 150; i++) {
                 Device device = new Device();
-                device.setBatteryLevel(faker.number().numberBetween(0, 10));
+                device.setBatteryLevel(faker.number().numberBetween(0, 100));
                 device.setName(faker.bothify("DEVICE-###-#?"));
                 device.setSerialNumber(faker.regexify("[A-Z1-9]{15}"));
                 emptyDevice.add(device);

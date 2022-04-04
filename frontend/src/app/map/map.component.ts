@@ -76,7 +76,7 @@ export class MapComponent implements AfterViewInit, OnInit, OnDestroy {
         this.showOrHideSideNav();
         this.recenterMap(-1.286389, 36.817223);
       })
-      .bindPopup(`<p>An Initial<br/>Test Marker</p>`);
+      .bindPopup(`<p>An Initial Test Marker<br/>Wait for Markers to Load</p>`);
   }
 
   private updateMarkers(data: any) {

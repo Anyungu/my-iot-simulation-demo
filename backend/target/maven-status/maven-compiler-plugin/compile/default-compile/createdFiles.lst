@@ -1,0 +1,12 @@
+com/anyungu/data/mapping/v1/controllers/DeviceController.class
+com/anyungu/data/mapping/entitiles/Device.class
+com/anyungu/data/mapping/MappingApplication.class
+com/anyungu/data/mapping/repos/DeviceDataRepository.class
+com/anyungu/data/mapping/repos/DeviceRepository.class
+com/anyungu/data/mapping/utils/DataGenerator.class
+com/anyungu/data/mapping/utils/PublishDataToSocketClients.class
+com/anyungu/data/mapping/v1/controllers/DeviceDataController.class
+com/anyungu/data/mapping/entitiles/DeviceData.class
+com/anyungu/data/mapping/v1/services/DeviceDataService.class
+com/anyungu/data/mapping/v1/services/DeviceService.class
+com/anyungu/data/mapping/configs/ApplicationStartUpListener.class

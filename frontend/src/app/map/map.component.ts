@@ -12,7 +12,7 @@ import { HttpUtilService } from '../services/http-util.service';
 import { MqttDataService } from '../services/mqtt-data.service';
 import { groupBy } from 'lodash';
 import { SideNavControlService } from '../services/side-nav-control.service';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -35,6 +35,7 @@ L.Marker.prototype.options.icon = iconDefault;
   styleUrls: ['./map.component.css'],
 })
 export class MapComponent implements AfterViewInit, OnInit, OnDestroy {
+
   private map: any;
   showSideNav: boolean = false;
   pollInterval!: any;
@@ -167,6 +168,7 @@ export class MapComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.pollInterval);
   }
+  
   showOrHideSideNav() {
     this.showSideNav = !this.showSideNav;
   }

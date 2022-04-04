@@ -17,9 +17,7 @@ import java.util.List;
 @Service
 public class DataGenerator {
 
-    // @Autowired
-    // AmqpSender amqpSender;
-
+    
     @Autowired
     DeviceRepository deviceRepository;
 
@@ -69,12 +67,14 @@ public class DataGenerator {
                 deviceData.add(currentDeviceData);
             }
 
-            // deviceDataRepository.saveAll(deviceData).forEach(data -> {
-            //     amqpSender.send("topic.sample.data", data);
-            // });
+            // deviceDataRepository.saveAll(deviceData);
+
+            deviceDataRepository.saveAll(deviceData).forEach(data -> {
+                System.out.println(data);
+            });
 
         } catch (Exception e) {
-
+            System.out.println(e.getMessage());
         }
 
 

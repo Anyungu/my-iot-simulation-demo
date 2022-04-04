@@ -13,6 +13,7 @@ import { MqttDataService } from '../services/mqtt-data.service';
 import { groupBy } from 'lodash';
 import { SideNavControlService } from '../services/side-nav-control.service';
 import { environment } from '../../environments/environment';
+import { Options } from '@angular-slider/ngx-slider';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -43,6 +44,21 @@ export class MapComponent implements AfterViewInit, OnInit, OnDestroy {
   deviceInfo!: any;
   private mapMarkersLayerGroup: any = L.layerGroup();
   private markersLayer: any = L.control.layers();
+
+  mapOptions: any = {
+    latitudeOptions: {
+      floor: -1.446608 ,
+      ceil:  -1.16859,
+      step: 0.001,
+     
+    },
+
+    longitudeOptions: { floor: 36.651077, ceil: 37.103577, step: 0.001 },
+
+    humidityOptions: { floor: 0, ceil: 100, step: 0.01 },
+
+    temperatureOptions: { floor: 0, ceil: 100, step: 0.01 },
+  };
 
   private initMap(): void {
     this.map = L.map('map', {

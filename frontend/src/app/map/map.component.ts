@@ -35,9 +35,9 @@ L.Marker.prototype.options.icon = iconDefault;
   styleUrls: ['./map.component.css'],
 })
 export class MapComponent implements AfterViewInit, OnInit, OnDestroy {
-
   private map: any;
   showSideNav: boolean = false;
+  showFilter: boolean = true;
   pollInterval!: any;
   deviceMessages: BehaviorSubject<any> = new BehaviorSubject({});
   deviceInfo!: any;
@@ -168,8 +168,12 @@ export class MapComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.pollInterval);
   }
-  
+
   showOrHideSideNav() {
     this.showSideNav = !this.showSideNav;
+  }
+
+  showOrHideFilter() {
+    this.showFilter = !this.showFilter;
   }
 }

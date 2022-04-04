@@ -16,6 +16,14 @@
   z-index: 1;
 }
 
+.title-box {
+  position: fixed;
+  top: 15px;
+  right: 525px;
+  z-index: 1;
+
+}
+
 #map {
   height: 100%;
 }

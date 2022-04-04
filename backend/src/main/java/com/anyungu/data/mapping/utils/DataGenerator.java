@@ -17,7 +17,6 @@ import java.util.List;
 @Service
 public class DataGenerator {
 
-    
     @Autowired
     DeviceRepository deviceRepository;
 
@@ -44,9 +43,7 @@ public class DataGenerator {
 
         }
 
-
     }
-
 
     @Scheduled(fixedRate = 30000, initialDelay = 3000)
     private void generateData() {
@@ -77,6 +74,17 @@ public class DataGenerator {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    @Scheduled(fixedRate = 10800000, initialDelay = 10800000)
+    private void deleteData() {
+        try {
+            
+            deviceDataRepository.deleteAll();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 }

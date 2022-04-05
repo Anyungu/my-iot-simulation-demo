@@ -1,22 +1,22 @@
 version: "3.9"
 
 services:
-  rabbit_mq:
-    build: ./rabbit-mq
-    container_name: rabbit_mq
-    volumes:
-      - ./rabbit-mq/etc/:/etc/rabbitmq/
-      - rabbit_mq_data:/var/
-    ports:
-      - 5672:5672
-      - 15674:15672
-      - 15000:15674
-      - 1883:1883
-      - 15675:15675
-      - 61613:61613
-    networks:
-      backnetwork:
-        ipv4_address: 10.5.0.6
+  # rabbit_mq:
+  #   build: ./rabbit-mq
+  #   container_name: rabbit_mq
+  #   volumes:
+  #     - ./rabbit-mq/etc/:/etc/rabbitmq/
+  #     - rabbit_mq_data:/var/
+  #   ports:
+  #     - 5672:5672
+  #     - 15674:15672
+  #     - 15000:15674
+  #     - 1883:1883
+  #     - 15675:15675
+  #     - 61613:61613
+  #   networks:
+  #     backnetwork:
+  #       ipv4_address: 10.5.0.6
 
   backend:
     container_name: backend

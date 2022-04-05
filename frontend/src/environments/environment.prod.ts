@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://iot.kodosensei.com',
+  apiUrl: 'https://iot-api.kodosensei.com',
 };

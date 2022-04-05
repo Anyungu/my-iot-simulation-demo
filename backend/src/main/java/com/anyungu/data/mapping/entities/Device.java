@@ -1,4 +1,4 @@
-package com.anyungu.data.mapping.entitiles;
+package com.anyungu.data.mapping.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

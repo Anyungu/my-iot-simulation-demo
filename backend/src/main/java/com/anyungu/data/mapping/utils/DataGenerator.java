@@ -24,7 +24,6 @@ public class DataGenerator {
     DeviceDataRepository deviceDataRepository;
 
     public void generateDevices() {
-        System.out.println("Generating Devices Info");
 
         deviceRepository.deleteAll();
 
@@ -50,7 +49,6 @@ public class DataGenerator {
     @Scheduled(fixedRate = 30000, initialDelay = 3000)
     private void generateData() {
         try {
-            System.out.println("Generating Devices Data");
             Faker faker = new Faker();
             List<Device> devices = deviceRepository.findAll();
             List<DeviceData> deviceData = new ArrayList<>();
@@ -66,11 +64,7 @@ public class DataGenerator {
                 deviceData.add(currentDeviceData);
             }
 
-            // deviceDataRepository.saveAll(deviceData);
-
-            deviceDataRepository.saveAll(deviceData).forEach(data -> {
-                System.out.println(data);
-            });
+            deviceDataRepository.saveAll(deviceData);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -81,7 +75,7 @@ public class DataGenerator {
     @Scheduled(fixedRate = 10800000, initialDelay = 10800000)
     private void deleteData() {
         try {
-            
+
             deviceDataRepository.deleteAll();
 
         } catch (Exception e) {

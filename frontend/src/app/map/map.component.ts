@@ -13,6 +13,7 @@ import { MqttDataService } from '../services/mqtt-data.service';
 import { groupBy } from 'lodash';
 import { SideNavControlService } from '../services/side-nav-control.service';
 import { environment } from '../../environments/environment';
+import { Options } from '@angular-slider/ngx-slider';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -35,14 +36,29 @@ L.Marker.prototype.options.icon = iconDefault;
   styleUrls: ['./map.component.css'],
 })
 export class MapComponent implements AfterViewInit, OnInit, OnDestroy {
-
   private map: any;
   showSideNav: boolean = false;
+  showFilter: boolean = true;
   pollInterval!: any;
   deviceMessages: BehaviorSubject<any> = new BehaviorSubject({});
   deviceInfo!: any;
   private mapMarkersLayerGroup: any = L.layerGroup();
   private markersLayer: any = L.control.layers();
+
+  mapOptions: any = {
+    latitudeOptions: {
+      floor: -1.446608 ,
+      ceil:  -1.16859,
+      step: 0.001,
+     
+    },
+
+    longitudeOptions: { floor: 36.651077, ceil: 37.103577, step: 0.001 },
+
+    humidityOptions: { floor: 0, ceil: 100, step: 0.01 },
+
+    temperatureOptions: { floor: 0, ceil: 100, step: 0.01 },
+  };
 
   private initMap(): void {
     this.map = L.map('map', {
@@ -76,7 +92,7 @@ export class MapComponent implements AfterViewInit, OnInit, OnDestroy {
         this.showOrHideSideNav();
         this.recenterMap(-1.286389, 36.817223);
       })
-      .bindPopup(`<p>An Initial<br/>Test Marker</p>`);
+      .bindPopup(`<p>An Initial Test Marker<br/>Wait for Markers to Load</p>`);
   }
 
   private updateMarkers(data: any) {
@@ -168,8 +184,12 @@ export class MapComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.pollInterval);
   }
-  
+
   showOrHideSideNav() {
     this.showSideNav = !this.showSideNav;
+  }
+
+  showOrHideFilter() {
+    this.showFilter = !this.showFilter;
   }
 }

@@ -1,7 +1,7 @@
 package com.anyungu.data.mapping.utils;
 
-import com.anyungu.data.mapping.entitiles.Device;
-import com.anyungu.data.mapping.entitiles.DeviceData;
+import com.anyungu.data.mapping.entities.Device;
+import com.anyungu.data.mapping.entities.DeviceData;
 import com.anyungu.data.mapping.repos.DeviceDataRepository;
 import com.anyungu.data.mapping.repos.DeviceRepository;
 // import com.anyungu.data.mapping.v1.controllers.AmqpSender;
@@ -24,9 +24,7 @@ public class DataGenerator {
     DeviceDataRepository deviceDataRepository;
 
     public void generateDevices() {
-
         deviceRepository.deleteAll();
-
         try {
             Faker faker = new Faker();
             List<Device> emptyDevice = new ArrayList<>();
@@ -36,14 +34,9 @@ public class DataGenerator {
                 device.setName(faker.bothify("DEVICE-###-#?"));
                 device.setSerialNumber(faker.regexify("[A-Z1-9]{15}"));
                 emptyDevice.add(device);
-                // amqpSender.send("topic.sample.device", device);
-
             }
             deviceRepository.saveAll(emptyDevice);
-        } catch (Exception e) {
-
-        }
-
+        } catch (Exception e) {}
     }
 
     @Scheduled(fixedRate = 30000, initialDelay = 3000)
@@ -75,9 +68,7 @@ public class DataGenerator {
     @Scheduled(fixedRate = 10800000, initialDelay = 10800000)
     private void deleteData() {
         try {
-
             deviceDataRepository.deleteAll();
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

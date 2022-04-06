@@ -5,11 +5,14 @@ import com.anyungu.data.mapping.entities.User;
 import com.anyungu.data.mapping.enums.ERole;
 import com.anyungu.data.mapping.repos.RoleRepository;
 import com.anyungu.data.mapping.repos.UserRepository;
+import com.anyungu.data.mapping.v1.models.requests.ChangePasswordRequest;
 import com.anyungu.data.mapping.v1.models.requests.LoginRequest;
+import com.anyungu.data.mapping.v1.models.requests.PasswordResetRequest;
 import com.anyungu.data.mapping.v1.models.requests.SignupRequest;
 import com.anyungu.data.mapping.v1.models.response.JwtResponse;
 import com.anyungu.data.mapping.v1.models.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +25,7 @@ import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -31,6 +35,9 @@ public class AuthController {
 
     @Autowired
     AuthenticationManager authenticationManager;
+
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     UserRepository userRepository;
@@ -110,5 +117,26 @@ public class AuthController {
         user.setRoles(roles);
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+
+    @PostMapping("/password/send-link")
+    public ResponseEntity<?> sendResetLink(@Valid @RequestBody PasswordResetRequest passwordResetRequest) {
+        userDetailsService.generatePasswordLink(passwordResetRequest.getEmail());
+        return ResponseEntity.ok(new MessageResponse("Link Sent!"));
+    }
+
+    @PostMapping("/password/token/{token}")
+    public ResponseEntity<?> confirmResetToken(@PathVariable UUID token) {
+        if (userDetailsService.confirmResetLinkisActive(token)) {
+            return ResponseEntity.ok(new MessageResponse("Token is ok"));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Token is ok"));
+    }
+
+    @PostMapping("/password/reset/{token}")
+    public ResponseEntity<?> resetPassword(@PathVariable UUID token, @RequestBody ChangePasswordRequest changePasswordRequest) {
+        userDetailsService.confirmResetLinkisActive(token);
+        return ResponseEntity.ok(new MessageResponse("Token is ok"));
     }
 }

@@ -28,5 +28,4 @@ public class PasswordReset extends BaseEntity {
     private User user;
 
     private Boolean active = true;
-
 }

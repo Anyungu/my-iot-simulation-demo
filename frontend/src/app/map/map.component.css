@@ -11,8 +11,8 @@
 
 .search-box {
   position: fixed;
-  top: 15px;
-  right: 25px;
+  /* top: 15px; */
+  /* right: 25px; */
   z-index: 1;
 }
 

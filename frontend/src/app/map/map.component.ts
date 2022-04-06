@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   EventEmitter,
+  HostListener,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -39,11 +40,22 @@ export class MapComponent implements AfterViewInit, OnInit, OnDestroy {
   private map: any;
   showSideNav: boolean = false;
   showFilter: boolean = true;
+  fiterFullScreen: boolean = true;
   pollInterval!: any;
   deviceMessages: BehaviorSubject<any> = new BehaviorSubject({});
   deviceInfo!: any;
   private mapMarkersLayerGroup: any = L.layerGroup();
   private markersLayer: any = L.control.layers();
+
+  @HostListener("window:resize", []) updateFilterVisibility() {
+    if(window.innerWidth < 780) {
+        this.showFilter = false;
+        this.fiterFullScreen = true;
+    }else {
+        this.showFilter = true;
+        this.fiterFullScreen = false;
+    }
+  }
 
   mapOptions: any = {
     latitudeOptions: {
@@ -136,7 +148,9 @@ export class MapComponent implements AfterViewInit, OnInit, OnDestroy {
     private mqttDataService: MqttDataService,
     private httpUtilService: HttpUtilService,
     private sideNavControlService: SideNavControlService
-  ) {}
+  ) {
+    this.updateFilterVisibility();
+  }
 
   ngOnInit(): void {
     this.httpUtilService

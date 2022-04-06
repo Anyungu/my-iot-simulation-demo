@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { SingleDeviceRecord } from 'src/app/models/device-data';
 import { SideNavControlService } from 'src/app/services/side-nav-control.service';
 
@@ -10,9 +10,21 @@ import { SideNavControlService } from 'src/app/services/side-nav-control.service
 export class SideNavComponent implements OnInit {
   public readings: any[] = [];
 
-  public deviceInfo:any = null
+  public deviceInfo:any = null;
+  public navMobile: boolean = false;
 
-  constructor(private sideNavControlService: SideNavControlService) {}
+  @HostListener("window:resize", []) updateFilterVisibility() {
+    if(window.innerWidth < 780) {
+        this.navMobile = true;
+    }else {
+     
+        this.navMobile = false;
+    }
+  }
+
+  constructor(private sideNavControlService: SideNavControlService) {
+    this.updateFilterVisibility();
+  }
 
   ngOnInit(): void {
     this.sideNavControlService.sideNavContent.subscribe((data) => {

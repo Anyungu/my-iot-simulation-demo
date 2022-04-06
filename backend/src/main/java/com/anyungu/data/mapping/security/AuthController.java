@@ -1,10 +1,5 @@
 package com.anyungu.data.mapping.security;
 
-import com.anyungu.data.mapping.entities.Role;
-import com.anyungu.data.mapping.entities.User;
-import com.anyungu.data.mapping.enums.ERole;
-import com.anyungu.data.mapping.repos.RoleRepository;
-import com.anyungu.data.mapping.repos.UserRepository;
 import com.anyungu.data.mapping.v1.models.requests.ChangePasswordRequest;
 import com.anyungu.data.mapping.v1.models.requests.LoginRequest;
 import com.anyungu.data.mapping.v1.models.requests.PasswordResetRequest;
@@ -14,19 +9,10 @@ import com.anyungu.data.mapping.v1.models.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -34,109 +20,54 @@ import java.util.stream.Collectors;
 public class AuthController {
 
     @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    PasswordEncoder encoder;
-
-    @Autowired
-    JwtUtils jwtUtils;
+    UserActionService userActionService;
 
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles));
+        JwtResponse jwtResponse = userActionService.authenticateUser(loginRequest);
+        return ResponseEntity.ok(jwtResponse);
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
-        }
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
-        }
-        // Create new user's account
-        User user = new User(
-                signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword())
-        );
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-                        break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
-        user.setRoles(roles);
-        userRepository.save(user);
+        //        if (userDetailsService.loadUserByUsername(signUpRequest.getUsername()).){}
+        //        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+        //            return ResponseEntity
+        //                    .badRequest()
+        //                    .body(new MessageResponse("Error: Username is already taken!"));
+        //        }
+        //
+        //        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        //            return ResponseEntity
+        //                    .badRequest()
+        //                    .body(new MessageResponse("Error: Email is already in use!"));
+        //        }
+        userActionService.registerUser(signUpRequest);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
 
     @PostMapping("/password/send-link")
     public ResponseEntity<?> sendResetLink(@Valid @RequestBody PasswordResetRequest passwordResetRequest) {
-        userDetailsService.generatePasswordLink(passwordResetRequest.getEmail());
+        userActionService.generatePasswordLink(passwordResetRequest.getEmail());
         return ResponseEntity.ok(new MessageResponse("Link Sent!"));
     }
 
     @PostMapping("/password/token/{token}")
     public ResponseEntity<?> confirmResetToken(@PathVariable UUID token) {
-        if (userDetailsService.confirmResetLinkisActive(token)) {
+        if (userActionService.confirmResetLinkIsActive(token)) {
             return ResponseEntity.ok(new MessageResponse("Token is ok"));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Token is ok"));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Token Expired/Invalid"));
     }
 
     @PostMapping("/password/reset/{token}")
-    public ResponseEntity<?> resetPassword(@PathVariable UUID token, @RequestBody ChangePasswordRequest changePasswordRequest) {
-        userDetailsService.confirmResetLinkisActive(token);
-        return ResponseEntity.ok(new MessageResponse("Token is ok"));
+    public ResponseEntity<?> resetPassword(@PathVariable UUID token, @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+        if (userActionService.confirmResetLinkIsActive(token)) {
+            userActionService.resetPasswordUsingToken(token, changePasswordRequest);
+            return ResponseEntity.ok(new MessageResponse("Password Changed"));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Token Expired/Invalid"));
     }
 }

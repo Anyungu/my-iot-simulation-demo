@@ -1,6 +1,7 @@
 com/anyungu/data/mapping/entities/DeviceData.class
 com/anyungu/data/mapping/v1/models/response/MessageResponse.class
 com/anyungu/data/mapping/MappingApplication.class
+com/anyungu/data/mapping/security/UserActionService.class
 com/anyungu/data/mapping/repos/RoleRepository.class
 com/anyungu/data/mapping/entities/Role.class
 com/anyungu/data/mapping/v1/models/response/JwtResponse.class

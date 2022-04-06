@@ -14,6 +14,7 @@
 /Users/adams/projects/mine/my-iot-simulation-demo/backend/src/main/java/com/anyungu/data/mapping/v1/models/requests/PasswordResetRequest.java
 /Users/adams/projects/mine/my-iot-simulation-demo/backend/src/main/java/com/anyungu/data/mapping/v1/models/requests/ChangePasswordRequest.java
 /Users/adams/projects/mine/my-iot-simulation-demo/backend/src/main/java/com/anyungu/data/mapping/security/WebSecurityConfig.java
+/Users/adams/projects/mine/my-iot-simulation-demo/backend/src/main/java/com/anyungu/data/mapping/security/UserActionService.java
 /Users/adams/projects/mine/my-iot-simulation-demo/backend/src/main/java/com/anyungu/data/mapping/utils/PublishDataToSocketClients.java
 /Users/adams/projects/mine/my-iot-simulation-demo/backend/src/main/java/com/anyungu/data/mapping/v1/controllers/MasterController.java
 /Users/adams/projects/mine/my-iot-simulation-demo/backend/src/main/java/com/anyungu/data/mapping/security/AuthTokenFilter.java

@@ -17,8 +17,8 @@ public class ApplicationStartUpListener implements ApplicationListener<Applicati
 
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
-
         this.dataGenerator.generateDevices();
+        // Register Default User
 
     }
 }

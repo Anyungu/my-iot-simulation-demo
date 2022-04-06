@@ -1,10 +1,5 @@
 
 spring:
-  rabbitmq:
-    host: ${AMQP_HOST}
-    port: ${AMQP_PORT}
-    username: ${AMQP_USERNAME}
-    password: ${AMQP_PASSWORD}
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
